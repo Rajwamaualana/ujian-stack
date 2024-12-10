@@ -1,9 +1,9 @@
 from collections import deque
 
 def google_pencarian():
-    history = deque()  # Menyimpan riwayat pencarian (untuk undo)
-    redo_stack = deque()  # Menyimpan riwayat redo
-    current_search = ""  # Menyimpan pencarian saat ini
+    history = deque()  
+    redo_stack = deque()  
+    current_search = "" 
 
     while True:
         print("\n1. Lakukan pencarian")
@@ -15,31 +15,31 @@ def google_pencarian():
 
         if pilihan == "1":
             query = input("Masukkan kata kunci pencarian: ")
-            # Simulasi pencarian Google dengan mencetak hasil pencarian
+            
             print(f"Hasil pencarian untuk: {query}")
-            history.append(query)  # Simpan pencarian dalam history
-            redo_stack.clear()  # Hapus riwayat redo jika ada pencarian baru
+            history.append(query) 
+            redo_stack.clear()
 
         elif pilihan == "2":
             if history:
-                # Menyimpan pencarian terakhir untuk redo dan menghapusnya dari history
+                
                 last_search = history.pop()
-                redo_stack.append(last_search)  # Simpan pencarian terakhir untuk redo
+                redo_stack.append(last_search)  
                 print(f"Undo: Pencarian untuk '{last_search}' dibatalkan.")
             else:
                 print("Tidak ada pencarian yang bisa di-undo.")
 
         elif pilihan == "3":
             if redo_stack:
-                # Mengambil pencarian terakhir yang di-undo untuk redo
+               
                 redo_search = redo_stack.pop()
-                history.append(redo_search)  # Kembalikan pencarian ke riwayat
+                history.append(redo_search) 
                 print(f"Redo: Pencarian untuk '{redo_search}' dilakukan kembali.")
             else:
                 print("Tidak ada pencarian yang bisa di-redo.")
 
         elif pilihan == "4":
-            # Menampilkan isi stack undo dan redo
+           
             print("\nStack Undo:")
             if history:
                 for search in history:
@@ -61,5 +61,5 @@ def google_pencarian():
         else:
             print("Opsi tidak valid!")
 
-# Menjalankan simulasi pencarian Google dengan undo dan redo
+
 google_pencarian()
