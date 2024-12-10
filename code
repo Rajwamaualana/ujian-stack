@@ -1,68 +1,48 @@
 from collections import deque
 
-def simulasi_undo_redo():
-    history = deque()  # Menyimpan riwayat tindakan (untuk undo)
+def google_search_simulator():
+    history = deque()  # Menyimpan riwayat pencarian (untuk undo)
     redo_stack = deque()  # Menyimpan riwayat redo
-    queue = deque()  # Antrian pelanggan
+    current_search = ""  # Menyimpan pencarian saat ini
 
     while True:
-        print("\n1. Tambah customer ke antrian")
-        print("2. Layani customer")
-        print("3. Tampilkan antrian")
-        print("4. Undo")
-        print("5. Redo")
-        print("6. Keluar")
+        print("\n1. Lakukan pencarian")
+        print("2. Undo pencarian")
+        print("3. Redo pencarian")
+        print("4. Keluar")
         pilihan = input("Pilih opsi: ")
 
         if pilihan == "1":
-            nama = input("Masukkan nama customer: ")
-            queue.append(nama)
-            history.append(("tambah", nama))  # Menyimpan tindakan untuk undo
-            redo_stack.clear()  # Clear redo stack setelah aksi baru
-            print(f"Customer {nama} ditambahkan ke antrian.")
-        
+            query = input("Masukkan kata kunci pencarian: ")
+            # Simulasi pencarian Google dengan mencetak hasil pencarian
+            print(f"Hasil pencarian untuk: {query}")
+            history.append(query)  # Simpan pencarian dalam history
+            redo_stack.clear()  # Hapus riwayat redo jika ada pencarian baru
+
         elif pilihan == "2":
-            if queue:
-                dilayani = queue.popleft()
-                history.append(("layani", dilayani))  # Menyimpan tindakan untuk undo
-                redo_stack.clear()  # Clear redo stack setelah aksi baru
-                print(f"Customer {dilayani} sedang dilayani.")
-            else:
-                print("Antrian kosong!")
-        
-        elif pilihan == "3":
-            print("Antrian saat ini:", list(queue))
-        
-        elif pilihan == "4":
             if history:
-                action, value = history.pop()  # Mengambil aksi terakhir untuk undo
-                if action == "tambah":
-                    queue.remove(value)  # Membatalkan penambahan customer
-                    redo_stack.append(("tambah", value))  # Menyimpan aksi untuk redo
-                elif action == "layani":
-                    queue.appendleft(value)  # Membatalkan pelayanan customer
-                    redo_stack.append(("layani", value))  # Menyimpan aksi untuk redo
-                print(f"Undo: Aksi {action} customer {value}.")
+                # Menyimpan pencarian terakhir untuk redo dan menghapusnya dari history
+                last_search = history.pop()
+                redo_stack.append(last_search)  # Simpan pencarian terakhir untuk redo
+                print(f"Undo: Pencarian untuk '{last_search}' dibatalkan.")
             else:
-                print("Tidak ada tindakan yang bisa di-undo.")
-        
-        elif pilihan == "5":
+                print("Tidak ada pencarian yang bisa di-undo.")
+
+        elif pilihan == "3":
             if redo_stack:
-                action, value = redo_stack.pop()  # Mengambil aksi terakhir untuk redo
-                if action == "tambah":
-                    queue.append(value)  # Menambahkan kembali customer yang di-undo
-                elif action == "layani":
-                    queue.popleft()  # Menyelesaikan kembali pelayanan customer yang di-undo
-                print(f"Redo: Aksi {action} customer {value}.")
+                # Mengambil pencarian terakhir yang di-undo untuk redo
+                redo_search = redo_stack.pop()
+                history.append(redo_search)  # Kembalikan pencarian ke riwayat
+                print(f"Redo: Pencarian untuk '{redo_search}' dilakukan kembali.")
             else:
-                print("Tidak ada tindakan yang bisa di-redo.")
-        
-        elif pilihan == "6":
+                print("Tidak ada pencarian yang bisa di-redo.")
+
+        elif pilihan == "4":
             print("Keluar dari program.")
             break
-        
+
         else:
             print("Opsi tidak valid!")
 
-# Menjalankan simulasi
-simulasi_undo_redo()
+# Menjalankan simulasi pencarian Google dengan undo dan redo
+google_search_simulator()
