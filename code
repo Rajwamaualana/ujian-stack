@@ -1,17 +1,39 @@
 from collections import deque
 
-def undo_redo():
+def simulasi_undo_redo():
     history = deque()  # Menyimpan riwayat tindakan (untuk undo)
     redo_stack = deque()  # Menyimpan riwayat redo
     queue = deque()  # Antrian pelanggan
 
     while True:
-        print("\n1. Undo")
-        print("2. Redo")
-        print("3. Keluar")
+        print("\n1. Tambah customer ke antrian")
+        print("2. Layani customer")
+        print("3. Tampilkan antrian")
+        print("4. Undo")
+        print("5. Redo")
+        print("6. Keluar")
         pilihan = input("Pilih opsi: ")
 
         if pilihan == "1":
+            nama = input("Masukkan nama customer: ")
+            queue.append(nama)
+            history.append(("tambah", nama))  # Menyimpan tindakan untuk undo
+            redo_stack.clear()  # Clear redo stack setelah aksi baru
+            print(f"Customer {nama} ditambahkan ke antrian.")
+        
+        elif pilihan == "2":
+            if queue:
+                dilayani = queue.popleft()
+                history.append(("layani", dilayani))  # Menyimpan tindakan untuk undo
+                redo_stack.clear()  # Clear redo stack setelah aksi baru
+                print(f"Customer {dilayani} sedang dilayani.")
+            else:
+                print("Antrian kosong!")
+        
+        elif pilihan == "3":
+            print("Antrian saat ini:", list(queue))
+        
+        elif pilihan == "4":
             if history:
                 action, value = history.pop()  # Mengambil aksi terakhir untuk undo
                 if action == "tambah":
@@ -24,7 +46,7 @@ def undo_redo():
             else:
                 print("Tidak ada tindakan yang bisa di-undo.")
         
-        elif pilihan == "2":
+        elif pilihan == "5":
             if redo_stack:
                 action, value = redo_stack.pop()  # Mengambil aksi terakhir untuk redo
                 if action == "tambah":
@@ -35,12 +57,12 @@ def undo_redo():
             else:
                 print("Tidak ada tindakan yang bisa di-redo.")
         
-        elif pilihan == "3":
+        elif pilihan == "6":
             print("Keluar dari program.")
             break
         
         else:
             print("Opsi tidak valid!")
 
-# Menjalankan simulasi undo dan redo
-undo_redo()
+# Menjalankan simulasi
+simulasi_undo_redo()
