@@ -9,7 +9,8 @@ def google_pencarian():
         print("\n1. Lakukan pencarian")
         print("2. Undo pencarian")
         print("3. Redo pencarian")
-        print("4. Keluar")
+        print("4. Lihat stack undo dan redo")
+        print("5. Keluar")
         pilihan = input("Pilih opsi: ")
 
         if pilihan == "1":
@@ -38,6 +39,22 @@ def google_pencarian():
                 print("Tidak ada pencarian yang bisa di-redo.")
 
         elif pilihan == "4":
+            # Menampilkan isi stack undo dan redo
+            print("\nStack Undo:")
+            if history:
+                for search in history:
+                    print(f"- {search}")
+            else:
+                print("Tidak ada pencarian dalam stack undo.")
+
+            print("\nStack Redo:")
+            if redo_stack:
+                for search in redo_stack:
+                    print(f"- {search}")
+            else:
+                print("Tidak ada pencarian dalam stack redo.")
+
+        elif pilihan == "5":
             print("Keluar dari program.")
             break
 
