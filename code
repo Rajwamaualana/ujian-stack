@@ -1,35 +1,46 @@
 from collections import deque
 
-def simulasi_antrian():
-    queue = deque()  # Membuat antrean kosong
+def undo_redo():
+    history = deque()  # Menyimpan riwayat tindakan (untuk undo)
+    redo_stack = deque()  # Menyimpan riwayat redo
+    queue = deque()  # Antrian pelanggan
+
     while True:
-        print("\n1. Tambah pelanggan ke antrian")
-        print("2. Layani pelanggan")
-        print("3. Tampilkan antrian")
-        print("4. Keluar")
+        print("\n1. Undo")
+        print("2. Redo")
+        print("3. Keluar")
         pilihan = input("Pilih opsi: ")
 
         if pilihan == "1":
-            nama = input("Masukkan nama pelanggan: ")
-            queue.append(nama)
-            print(f"Pelanggan {nama} ditambahkan ke antrian.")
+            if history:
+                action, value = history.pop()  # Mengambil aksi terakhir untuk undo
+                if action == "tambah":
+                    queue.remove(value)  # Membatalkan penambahan customer
+                    redo_stack.append(("tambah", value))  # Menyimpan aksi untuk redo
+                elif action == "layani":
+                    queue.appendleft(value)  # Membatalkan pelayanan customer
+                    redo_stack.append(("layani", value))  # Menyimpan aksi untuk redo
+                print(f"Undo: Aksi {action} customer {value}.")
+            else:
+                print("Tidak ada tindakan yang bisa di-undo.")
         
         elif pilihan == "2":
-            if queue:
-                dilayani = queue.popleft()
-                print(f"Pelanggan {dilayani} sedang dilayani.")
+            if redo_stack:
+                action, value = redo_stack.pop()  # Mengambil aksi terakhir untuk redo
+                if action == "tambah":
+                    queue.append(value)  # Menambahkan kembali customer yang di-undo
+                elif action == "layani":
+                    queue.popleft()  # Menyelesaikan kembali pelayanan customer yang di-undo
+                print(f"Redo: Aksi {action} customer {value}.")
             else:
-                print("Antrian kosong!")
+                print("Tidak ada tindakan yang bisa di-redo.")
         
         elif pilihan == "3":
-            print("Antrian saat ini:", list(queue))
-        
-        elif pilihan == "4":
             print("Keluar dari program.")
             break
         
         else:
             print("Opsi tidak valid!")
 
-# Menjalankan simulasi
-simulasi_antrian()
+# Menjalankan simulasi undo dan redo
+undo_redo()
