@@ -1,6 +1,6 @@
 from collections import deque
 
-def google_search_simulator():
+def google_pencarian():
     history = deque()  # Menyimpan riwayat pencarian (untuk undo)
     redo_stack = deque()  # Menyimpan riwayat redo
     current_search = ""  # Menyimpan pencarian saat ini
@@ -45,4 +45,4 @@ def google_search_simulator():
             print("Opsi tidak valid!")
 
 # Menjalankan simulasi pencarian Google dengan undo dan redo
-google_search_simulator()
+google_pencarian()
